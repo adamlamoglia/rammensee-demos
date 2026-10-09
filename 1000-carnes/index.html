@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#9b1c1c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>1000 Carnes — Protótipo</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #efe3e1; --app: #fdf8f7; --ink: #1f1414; --muted: #7a6260;
+    --brand: #9b1c1c; --brand2: #c2410c; --brand-soft: #f8e1df;
+    --gold: #d4a017; --line: #eedad7; --card: #ffffff; --ok: #2f7a4b;
+    --display: 'Oswald', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: var(--bg); font-family: Inter, system-ui, sans-serif; color: var(--ink);
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px 16px; }
+  .note { font-size: 12px; color: var(--muted); text-align: center; max-width: 520px; }
+  .phone { width: 390px; height: 800px; max-width: 100%; background: var(--app); border-radius: 44px; border: 10px solid #1a1412;
+    box-shadow: 0 30px 60px -20px rgba(30,15,10,.45); overflow: hidden; position: relative; display: flex; flex-direction: column; }
+  @media (max-width: 440px) { body { padding: 0; justify-content: flex-start; } .note { padding: 8px 16px; } .phone { width: 100%; height: 100%; border: 0; border-radius: 0; } }
+  .screen { flex: 1; overflow-y: auto; padding: 18px 18px 90px; display: none; }
+  .screen.active { display: block; animation: in .22s ease-out; }
+  @keyframes in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .screen.active { animation: none; } }
+  h1, h2 { font-family: var(--display); }
+  h1 { font-size: 26px; line-height: 1.15; }
+  h2 { font-size: 19px; margin: 22px 0 10px; }
+  .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .logo { font-family: var(--display); font-weight: 700; font-size: 22px; color: var(--brand); letter-spacing: -.3px; line-height: 1; }
+  .logo small { display: block; font-family: Inter, sans-serif; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-top: 3px; }
+  .store { font-size: 12px; background: var(--brand-soft); color: var(--brand); padding: 6px 10px; border-radius: 99px; font-weight: 600; border: 0; cursor: pointer; }
+  .hero { background: linear-gradient(135deg, var(--brand), var(--brand2)); color: #fff; border-radius: 22px; padding: 20px; position: relative; overflow: hidden; }
+  .hero h1 { position: relative; z-index: 1; max-width: 82%; }
+  .hero p { font-size: 13px; opacity: .92; margin-top: 6px; max-width: 68%; position: relative; z-index: 1; }
+  .hero .pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.18); padding: 5px 10px; border-radius: 99px; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #ffd58a; box-shadow: 0 0 0 4px rgba(255,213,138,.3); }
+  .hero .emoji { position: absolute; right: -6px; bottom: -14px; font-size: 84px; }
+  .quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+  .quick button { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 6px; font: 600 12px Inter; color: var(--ink); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .quick button span { font-size: 24px; }
+  .quick button:active { transform: scale(.97); }
+  .points-mini { margin-top: 16px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  .bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; flex: 1; }
+  .bar i { display: block; height: 100%; background: var(--gold); border-radius: 99px; }
+  .chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin: 10px 0 4px; }
+  .chip { flex: none; padding: 7px 13px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); font: 500 13px Inter; color: var(--ink); cursor: pointer; }
+  .chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .item { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .thumb { width: 62px; height: 62px; border-radius: 14px; background: var(--brand-soft); display: grid; place-items: center; font-size: 30px; flex: none; }
+  .item .info { flex: 1; min-width: 0; }
+  .item b { font-size: 14px; font-weight: 600; display: block; }
+  .item small { color: var(--muted); font-size: 12px; }
+  .item .price { font-weight: 600; font-size: 14px; margin-top: 3px; }
+  .add { width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--brand); color: #fff; font-size: 20px; cursor: pointer; flex: none; }
+  .add:active { transform: scale(.92); }
+  .cartbar { position: absolute; left: 14px; right: 14px; bottom: 82px; background: var(--ink); color: #fff; border-radius: 16px; padding: 13px 16px; display: none; justify-content: space-between; align-items: center; font-weight: 600; font-size: 14px; cursor: pointer; box-shadow: 0 10px 24px -8px rgba(0,0,0,.4); }
+  .cartbar.show { display: flex; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px; margin-bottom: 12px; }
+  label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin: 12px 0 6px; }
+  select, input, textarea { width: 100%; padding: 11px 12px; border-radius: 12px; border: 1px solid var(--line); font: 14px Inter; background: #fff; color: var(--ink); }
+  textarea { resize: none; height: 64px; }
+  .row { display: flex; gap: 10px; } .row > div { flex: 1; }
+  .cta { width: 100%; margin-top: 16px; padding: 14px; border-radius: 14px; border: 0; background: var(--brand); color: #fff; font: 600 15px Inter; cursor: pointer; }
+  .cta.ghost { background: var(--brand-soft); color: var(--brand); }
+  .opts { display: flex; gap: 8px; }
+  .opt { flex: 1; padding: 11px; border: 1px solid var(--line); border-radius: 12px; text-align: center; font-size: 13px; font-weight: 600; cursor: pointer; background: #fff; }
+  .opt.on { border-color: var(--brand); background: var(--brand-soft); color: var(--brand); }
+  .sum { display: flex; justify-content: space-between; font-size: 14px; padding: 6px 0; }
+  .sum.total { font-weight: 700; font-size: 16px; border-top: 1px solid var(--line); margin-top: 6px; padding-top: 12px; }
+  .loyal { background: linear-gradient(160deg, var(--ink), var(--brand)); color: #fff; border-radius: 22px; padding: 20px; }
+  .loyal .big { font-family: var(--display); font-size: 44px; font-weight: 700; color: #ffd58a; }
+  .loyal .bar { background: rgba(255,255,255,.18); margin-top: 12px; }
+  .reward { display: flex; justify-content: space-between; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .reward button { border: 0; padding: 7px 12px; border-radius: 99px; font: 600 12px Inter; cursor: pointer; background: var(--brand-soft); color: var(--brand); }
+  .reward button:disabled { opacity: .45; cursor: default; }
+  .pix { text-align: center; }
+  .qr { width: 170px; height: 170px; margin: 14px auto; border-radius: 14px; background: repeating-conic-gradient(var(--ink) 0 25%, #fff 0 50%) 0 0/22px 22px; border: 10px solid #fff; outline: 1px solid var(--line); }
+  .sim { font-size: 12px; color: var(--brand); font-weight: 600; margin-bottom: 6px; }
+  .status { display: flex; gap: 10px; align-items: flex-start; margin: 12px 0; text-align: left; }
+  .status i { width: 22px; height: 22px; border-radius: 50%; background: var(--line); flex: none; display: grid; place-items: center; font-style: normal; font-size: 12px; color: #fff; }
+  .status.done i { background: var(--ok); }
+  .status small { display: block; color: var(--muted); font-size: 12px; }
+  .tabbar { position: absolute; bottom: 0; left: 0; right: 0; height: 72px; background: var(--app); border-top: 1px solid var(--line); display: flex; justify-content: space-around; align-items: center; padding-bottom: 6px; }
+  .tabbar button { background: none; border: 0; display: flex; flex-direction: column; align-items: center; gap: 3px; font: 500 11px Inter; color: var(--muted); cursor: pointer; padding: 6px 10px; }
+  .tabbar button span { font-size: 20px; filter: grayscale(1); opacity: .7; }
+  .tabbar button.on { color: var(--brand); font-weight: 600; }
+  .tabbar button.on span { filter: none; opacity: 1; }
+  button:focus-visible, .opt:focus-visible, .chip:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .toast { position: absolute; top: 18px; left: 50%; transform: translate(-50%, -80px); background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 99px; font-size: 13px; transition: transform .25s ease; white-space: nowrap; z-index: 5; }
+  .toast.show { transform: translate(-50%, 0); }
+</style>
+</head>
+<body>
+<div class="note"><b>Protótipo de demonstração</b> · proposta da Rammensee Labs para 1000 Carnes · não é um app oficial e não processa pedidos nem pagamentos · produtos e preços de exemplo</div>
+<div class="phone">
+  <div class="toast" id="toast"></div>
+
+  <section class="screen active" id="home">
+    <div class="top">
+      <div class="logo">1000 Carnes<small>Açougue · Largo do Retiro</small></div>
+      <button class="store" id="storeBtn" onclick="cycleStore()"></button>
+    </div>
+    <div class="hero">
+      <div class="pill"><span class="dot"></span> <span id="heroPill"></span></div>
+      <h1 id="heroTitle"></h1>
+      <p id="heroText"></p>
+      <div class="emoji" id="heroEmoji"></div>
+    </div>
+    <div class="quick">
+      <button onclick="go('menu')"><span id="q1e"></span><b id="q1"></b></button>
+      <button onclick="go('book')"><span id="q2e"></span><b id="q2"></b></button>
+      <button onclick="go('loyalty')"><span>⭐</span>Meus pontos</button>
+    </div>
+    <div class="points-mini" onclick="go('loyalty')">
+      <div style="font-size:26px" id="miniEmoji"></div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600;margin-bottom:6px" id="miniText"></div><div class="bar"><i class="fill"></i></div></div>
+    </div>
+    <h2 id="popTitle"></h2>
+    <div id="popular"></div>
+  </section>
+
+  <section class="screen" id="menu">
+    <h1 id="menuTitle"></h1>
+    <div class="chips" id="cats"></div>
+    <div id="items"></div>
+  </section>
+
+  <section class="screen" id="cart">
+    <h1>Seu pedido</h1>
+    <div class="card" id="cartList" style="margin-top:14px"></div>
+    <div class="card">
+      <label style="margin-top:0" for="when">Como prefere receber?</label>
+      <div class="opts" id="deliveryOpts"></div>
+      <label for="when">Horário</label>
+      <select id="when"></select>
+    </div>
+    <button class="cta" onclick="go('pix')">Pagar com Pix</button>
+    <button class="cta ghost" onclick="go('menu')">Adicionar mais itens</button>
+  </section>
+
+  <section class="screen" id="pix">
+    <div class="card pix" id="pixCard">
+      <h2 style="margin-top:0">Pague com Pix</h2>
+      <div class="sim">Simulação · nenhum pagamento real</div>
+      <div style="color:var(--muted);font-size:13px">Total <b id="pixTotal" style="color:var(--ink)"></b></div>
+      <div class="qr"></div>
+      <button class="cta" onclick="paid()">Já paguei</button>
+    </div>
+    <div class="card" id="track" hidden>
+      <div class="status done"><i>✓</i><div><b>Pagamento confirmado</b><small>Você ganhou <span id="earned"></span> pontos</small></div></div>
+      <div class="status done"><i>✓</i><div><b>Pedido recebido</b><small id="trackStore"></small></div></div>
+      <div class="status"><i></i><div><b id="trackStep"></b><small>Avisamos quando estiver pronto</small></div></div>
+      <button class="cta ghost" onclick="go('home')">Voltar ao início</button>
+    </div>
+  </section>
+
+  <section class="screen" id="book">
+    <h1 id="bookTitle"></h1>
+    <p style="color:var(--muted);font-size:13px;margin-top:6px" id="bookText"></p>
+    <div class="card" style="margin-top:14px" id="bookForm"></div>
+    <div class="card" id="bookSummary"></div>
+    <button class="cta" id="bookCta" onclick="confirmBook()"></button>
+  </section>
+
+  <section class="screen" id="loyalty">
+    <h1 style="margin-bottom:14px" id="clubTitle"></h1>
+    <div class="loyal">
+      <div style="font-size:13px;opacity:.85">Seus pontos</div>
+      <div class="big" id="pts"></div>
+      <div style="font-size:13px;opacity:.9">R$ 1 = 1 ponto</div>
+      <div class="bar"><i class="fill"></i></div>
+    </div>
+    <h2>Troque seus pontos</h2>
+    <div id="rewards"></div>
+  </section>
+
+  <div class="cartbar" id="cartbar" onclick="go('cart')"><span id="cartCount"></span><span id="cartTotal"></span></div>
+
+  <nav class="tabbar">
+    <button class="on" data-t="home" onclick="go('home')"><span>🏠</span>Início</button>
+    <button data-t="menu" onclick="go('menu')"><span id="tab2e"></span><b id="tab2" style="font-weight:inherit"></b></button>
+    <button data-t="book" onclick="go('book')"><span id="tab3e"></span><b id="tab3" style="font-weight:inherit"></b></button>
+    <button data-t="loyalty" onclick="go('loyalty')"><span>⭐</span>Clube</button>
+  </nav>
+</div>
+
+<script>
+const C = {"title": "1000 Carnes", "subtitle": "Açougue · Largo do Retiro", "stores": ["Largo do Retiro"], "hero": {"pill": "Cortes frescos todo dia", "title": "Kit churrasco<br>pronto pro sábado", "text": "Peça, pague no Pix e retire já embalado.", "emoji": "🔥"}, "quick": [["🛍️", "Pedir cortes"], ["🔥", "Kit churrasco"]], "tabs": [["🥩", "Cortes"], ["🔥", "Kits"]], "menuTitle": "Cortes", "popTitle": "Mais pedidos da semana", "categories": ["Bovinos", "Suínos", "Aves", "Acompanhamentos"], "products": [{"id": 1, "cat": "Bovinos", "name": "Picanha", "desc": "1 kg · peça ou fatiada", "price": 79.9, "e": "🥩", "pop": true}, {"id": 2, "cat": "Bovinos", "name": "Fraldinha", "desc": "1 kg", "price": 54.9, "e": "🥩"}, {"id": 3, "cat": "Bovinos", "name": "Alcatra", "desc": "1 kg · bife ou peça", "price": 49.9, "e": "🥩"}, {"id": 4, "cat": "Bovinos", "name": "Carne do sol", "desc": "1 kg", "price": 46.9, "e": "🥩", "pop": true}, {"id": 5, "cat": "Suínos", "name": "Linguiça toscana", "desc": "1 kg", "price": 27.9, "e": "🌭", "pop": true}, {"id": 6, "cat": "Suínos", "name": "Costelinha suína", "desc": "1 kg", "price": 32.9, "e": "🍖"}, {"id": 7, "cat": "Aves", "name": "Coxa e sobrecoxa", "desc": "1 kg", "price": 17.9, "e": "🍗"}, {"id": 8, "cat": "Aves", "name": "Asa de frango", "desc": "1 kg", "price": 22.9, "e": "🍗"}, {"id": 9, "cat": "Acompanhamentos", "name": "Carvão", "desc": "Saco de 5 kg", "price": 27.9, "e": "⚫"}, {"id": 10, "cat": "Acompanhamentos", "name": "Pão de alho", "desc": "Pacote com 5", "price": 13.9, "e": "🧄"}], "delivery": ["Retirar no açougue", "Entrega"], "times": ["Assim que ficar pronto (~20 min)", "Sábado 08:00", "Sábado 10:00", "Domingo 08:00"], "trackStep": "Cortando e embalando", "book": {"mode": "encomenda", "title": "Kits churrasco", "text": "Monte o churrasco com antecedência e retire tudo pronto.", "cta": "Confirmar e pagar o sinal", "done": "Simulação: kit encomendado ✓", "fields": [{"type": "select", "label": "Escolha o kit", "options": [["Kit 5 pessoas — 2,5 kg (R$ 179)", 179], ["Kit 10 pessoas — 5 kg (R$ 339)", 339], ["Kit premium com picanha — 3 kg (R$ 289)", 289]]}, {"type": "number", "label": "Quantidade", "value": 1}, {"type": "date", "label": "Data da retirada"}, {"type": "textarea", "label": "Como quer os cortes? (opcional)", "placeholder": "Ex.: picanha em bifes de 2 dedos, linguiça separada"}]}, "club": "Clube 1000 Carnes", "startPoints": 220, "rewards": [{"e": "🧄", "name": "Pão de alho", "short": "um pão de alho", "cost": 150}, {"e": "⚫", "name": "Saco de carvão", "short": "um carvão", "cost": 250}, {"e": "🌭", "name": "1 kg de linguiça", "short": "1 kg de linguiça", "cost": 350}, {"e": "🔥", "name": "R$ 40 off no kit churrasco", "short": "R$ 40 off", "cost": 600}]};
+let storeIdx = 0, cat = C.categories[0], cart = {}, points = C.startPoints;
+const $ = id => document.getElementById(id);
+const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function setText() {
+  $('heroPill').textContent = C.hero.pill; $('heroTitle').innerHTML = C.hero.title; $('heroText').textContent = C.hero.text; $('heroEmoji').textContent = C.hero.emoji;
+  $('q1').textContent = C.quick[0][1]; $('q1e').textContent = C.quick[0][0]; $('q2').textContent = C.quick[1][1]; $('q2e').textContent = C.quick[1][0];
+  $('tab2').textContent = C.tabs[0][1]; $('tab2e').textContent = C.tabs[0][0]; $('tab3').textContent = C.tabs[1][1]; $('tab3e').textContent = C.tabs[1][0];
+  $('menuTitle').textContent = C.menuTitle; $('popTitle').textContent = C.popTitle; $('miniEmoji').textContent = C.rewards[0].e;
+  $('bookTitle').textContent = C.book.title; $('bookText').textContent = C.book.text; $('bookCta').textContent = C.book.cta;
+  $('clubTitle').textContent = C.club; $('trackStep').textContent = C.trackStep;
+  $('deliveryOpts').innerHTML = C.delivery.map((d, i) => `<div class="opt ${i ? '' : 'on'}" tabindex="0" onclick="pick(this)">${esc(d)}</div>`).join('');
+  $('when').innerHTML = C.times.map(t => `<option>${esc(t)}</option>`).join('');
+  $('bookForm').innerHTML = C.book.fields.map((f, i) => {
+    const id = 'bf' + i;
+    if (f.type === 'select') return `<label for="${id}" ${i ? '' : 'style="margin-top:0"'}>${esc(f.label)}</label><select id="${id}" onchange="calcBook()">${f.options.map(o => `<option value="${o[1] ?? ''}">${esc(o[0])}</option>`).join('')}</select>`;
+    if (f.type === 'date') return `<label for="${id}">${esc(f.label)}</label><input id="${id}" type="date">`;
+    if (f.type === 'number') return `<label for="${id}">${esc(f.label)}</label><input id="${id}" type="number" min="1" value="${f.value}" oninput="calcBook()">`;
+    if (f.type === 'textarea') return `<label for="${id}">${esc(f.label)}</label><textarea id="${id}" placeholder="${esc(f.placeholder)}"></textarea>`;
+    return '';
+  }).join('');
+  const d = new Date(); d.setDate(d.getDate() + 3);
+  document.querySelectorAll('#bookForm input[type=date]').forEach(x => x.value = d.toISOString().slice(0, 10));
+}
+function itemHTML(p) {
+  return `<div class="item"><div class="thumb">${p.e}</div><div class="info"><b>${esc(p.name)}</b><small>${esc(p.desc)}</small><div class="price">${brl(p.price)}</div></div><button class="add" onclick="add(${p.id})" aria-label="Adicionar ${esc(p.name)}">+</button></div>`;
+}
+function renderMenu() {
+  $('cats').innerHTML = C.categories.map(c => `<button class="chip ${c === cat ? 'on' : ''}" onclick="cat='${c}';renderMenu()">${esc(c)}</button>`).join('');
+  $('items').innerHTML = C.products.filter(p => p.cat === cat).map(itemHTML).join('');
+}
+function total() { return Object.entries(cart).reduce((s, [id, q]) => s + C.products.find(p => p.id == id).price * q, 0); }
+function add(id) { cart[id] = (cart[id] || 0) + 1; toast(C.products.find(p => p.id === id).name + ' adicionado'); renderCart(); }
+function renderCart() {
+  const n = Object.values(cart).reduce((a, b) => a + b, 0);
+  const cur = document.querySelector('.screen.active').id;
+  $('cartbar').classList.toggle('show', n > 0 && ['home', 'menu'].includes(cur));
+  $('cartCount').textContent = `Ver pedido · ${n} ${n === 1 ? 'item' : 'itens'}`;
+  $('cartTotal').textContent = brl(total());
+  $('cartList').innerHTML = n ? Object.entries(cart).map(([id, q]) => { const p = C.products.find(x => x.id == id); return `<div class="sum"><span>${q}× ${esc(p.name)}</span><span>${brl(p.price * q)}</span></div>`; }).join('') + `<div class="sum total"><span>Total</span><span>${brl(total())}</span></div>` : '<div style="color:var(--muted);font-size:14px">Seu pedido está vazio.</div>';
+  $('pixTotal').textContent = brl(total());
+}
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+  document.querySelectorAll('.tabbar button').forEach(b => b.classList.toggle('on', b.dataset.t === id));
+  if (id === 'pix') { $('track').hidden = true; $('pixCard').hidden = false; }
+  renderCart(); $(id).scrollTop = 0;
+}
+function paid() {
+  const earned = Math.floor(total()); points += earned; $('earned').textContent = earned;
+  $('trackStore').textContent = C.title + ' ' + C.stores[storeIdx];
+  $('pixCard').hidden = true; $('track').hidden = false; cart = {}; renderLoyalty();
+}
+function pick(el) { el.parentNode.querySelectorAll('.opt').forEach(o => o.classList.remove('on')); el.classList.add('on'); }
+function cycleStore() { storeIdx = (storeIdx + 1) % C.stores.length; $('storeBtn').textContent = `📍 ${C.stores[storeIdx]}${C.stores.length > 1 ? ' ▾' : ''}`; if (C.stores.length > 1) toast('Unidade: ' + C.stores[storeIdx]); }
+function calcBook() {
+  const b = C.book;
+  if (b.mode === 'reserva') {
+    const p = parseInt($('bf' + b.peopleField).value) || 1;
+    $('bookSummary').innerHTML = `<div class="sum"><span>Mesa para</span><span>${p} ${p === 1 ? 'pessoa' : 'pessoas'}</span></div><div class="sum"><span>Taxa de reserva</span><span>Grátis</span></div><div class="sum total"><span>Confirmação</span><span>Na hora, pelo app</span></div>`;
+    return;
+  }
+  const v = parseFloat($('bf0').value) || 0; const q = Math.max(1, parseInt($('bf1').value) || 1); const sub = v * q;
+  $('bookSummary').innerHTML = `<div class="sum"><span>Encomenda</span><span>${brl(sub)}</span></div><div class="sum"><span>Sinal agora (50%)</span><span>${brl(sub / 2)}</span></div><div class="sum total"><span>Restante na retirada</span><span>${brl(sub / 2)}</span></div>`;
+}
+function confirmBook() { toast(C.book.done); }
+function renderLoyalty() {
+  $('pts').textContent = points;
+  const first = C.rewards[0];
+  const next = C.rewards.find(r => r.cost > points) || C.rewards[C.rewards.length - 1];
+  document.querySelectorAll('.fill').forEach(f => f.style.width = Math.min(100, points / next.cost * 100) + '%');
+  $('miniText').innerHTML = points >= first.cost ? `Você já pode trocar ${points} pontos por prêmios` : `Faltam ${first.cost - points} pontos para ${esc(first.short)}`;
+  $('rewards').innerHTML = C.rewards.map((r, i) => `<div class="reward"><span>${r.e} ${esc(r.name)}<br><small style="color:var(--muted)">${r.cost} pontos</small></span><button ${r.cost > points ? 'disabled' : ''} onclick="redeem(${i})">Trocar</button></div>`).join('');
+}
+function redeem(i) { points -= C.rewards[i].cost; renderLoyalty(); toast('Simulação: prêmio resgatado 🎉'); }
+let tt; function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 1800); }
+
+setText();
+$('storeBtn').textContent = `📍 ${C.stores[0]}${C.stores.length > 1 ? ' ▾' : ''}`;
+$('popular').innerHTML = C.products.filter(p => p.pop).map(itemHTML).join('');
+renderMenu(); renderCart(); calcBook(); renderLoyalty();
+</script>
+</body>
+</html>
