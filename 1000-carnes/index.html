@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#9b1c1c">
+<meta name="theme-color" content="#c62828">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>1000 Carnes — Protótipo</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: light;
-    --bg: #efe3e1; --app: #fdf8f7; --ink: #1f1414; --muted: #7a6260;
-    --brand: #9b1c1c; --brand2: #c2410c; --brand-soft: #f8e1df;
-    --gold: #d4a017; --line: #eedad7; --card: #ffffff; --ok: #2f7a4b;
-    --display: 'Oswald', Arial, sans-serif;
+    --bg: #ecebea; --app: #fbf9f8; --ink: #262626; --muted: #5f5a58;
+    --brand: #c62828; --brand2: #e53935; --brand-soft: #f7e1df;
+    --gold: #f2b8b0; --line: #e6e0de; --card: #ffffff; --ok: #2f7a4b;
+    --display: 'Oswald', Arial, sans-serif; --logofont: 'Oswald', Arial, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
@@ -32,7 +32,7 @@
   h1 { font-size: 26px; line-height: 1.15; }
   h2 { font-size: 19px; margin: 22px 0 10px; }
   .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-  .logo { font-family: var(--display); font-weight: 700; font-size: 22px; color: var(--brand); letter-spacing: -.3px; line-height: 1; }
+  .logo { font-family: var(--logofont); font-weight: 700; font-size: 26px; color: var(--brand); letter-spacing: -.3px; line-height: 1; }
   .logo small { display: block; font-family: Inter, sans-serif; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-top: 3px; }
   .store { font-size: 12px; background: var(--brand-soft); color: var(--brand); padding: 6px 10px; border-radius: 99px; font-weight: 600; border: 0; cursor: pointer; }
   .hero { background: linear-gradient(135deg, var(--brand), var(--brand2)); color: #fff; border-radius: 22px; padding: 20px; position: relative; overflow: hidden; }
@@ -103,7 +103,7 @@
 
   <section class="screen active" id="home">
     <div class="top">
-      <div class="logo">1000 Carnes<small>Açougue · Largo do Retiro</small></div>
+      <div class="logo">1000 Carnes<small>Atacadão de carnes · Barros Reis</small></div>
       <button class="store" id="storeBtn" onclick="cycleStore()"></button>
     </div>
     <div class="hero">
@@ -191,7 +191,7 @@
 </div>
 
 <script>
-const C = {"title": "1000 Carnes", "subtitle": "Açougue · Largo do Retiro", "stores": ["Largo do Retiro"], "hero": {"pill": "Cortes frescos todo dia", "title": "Kit churrasco<br>pronto pro sábado", "text": "Peça, pague no Pix e retire já embalado.", "emoji": "🔥"}, "quick": [["🛍️", "Pedir cortes"], ["🔥", "Kit churrasco"]], "tabs": [["🥩", "Cortes"], ["🔥", "Kits"]], "menuTitle": "Cortes", "popTitle": "Mais pedidos da semana", "categories": ["Bovinos", "Suínos", "Aves", "Acompanhamentos"], "products": [{"id": 1, "cat": "Bovinos", "name": "Picanha", "desc": "1 kg · peça ou fatiada", "price": 79.9, "e": "🥩", "pop": true}, {"id": 2, "cat": "Bovinos", "name": "Fraldinha", "desc": "1 kg", "price": 54.9, "e": "🥩"}, {"id": 3, "cat": "Bovinos", "name": "Alcatra", "desc": "1 kg · bife ou peça", "price": 49.9, "e": "🥩"}, {"id": 4, "cat": "Bovinos", "name": "Carne do sol", "desc": "1 kg", "price": 46.9, "e": "🥩", "pop": true}, {"id": 5, "cat": "Suínos", "name": "Linguiça toscana", "desc": "1 kg", "price": 27.9, "e": "🌭", "pop": true}, {"id": 6, "cat": "Suínos", "name": "Costelinha suína", "desc": "1 kg", "price": 32.9, "e": "🍖"}, {"id": 7, "cat": "Aves", "name": "Coxa e sobrecoxa", "desc": "1 kg", "price": 17.9, "e": "🍗"}, {"id": 8, "cat": "Aves", "name": "Asa de frango", "desc": "1 kg", "price": 22.9, "e": "🍗"}, {"id": 9, "cat": "Acompanhamentos", "name": "Carvão", "desc": "Saco de 5 kg", "price": 27.9, "e": "⚫"}, {"id": 10, "cat": "Acompanhamentos", "name": "Pão de alho", "desc": "Pacote com 5", "price": 13.9, "e": "🧄"}], "delivery": ["Retirar no açougue", "Entrega"], "times": ["Assim que ficar pronto (~20 min)", "Sábado 08:00", "Sábado 10:00", "Domingo 08:00"], "trackStep": "Cortando e embalando", "book": {"mode": "encomenda", "title": "Kits churrasco", "text": "Monte o churrasco com antecedência e retire tudo pronto.", "cta": "Confirmar e pagar o sinal", "done": "Simulação: kit encomendado ✓", "fields": [{"type": "select", "label": "Escolha o kit", "options": [["Kit 5 pessoas — 2,5 kg (R$ 179)", 179], ["Kit 10 pessoas — 5 kg (R$ 339)", 339], ["Kit premium com picanha — 3 kg (R$ 289)", 289]]}, {"type": "number", "label": "Quantidade", "value": 1}, {"type": "date", "label": "Data da retirada"}, {"type": "textarea", "label": "Como quer os cortes? (opcional)", "placeholder": "Ex.: picanha em bifes de 2 dedos, linguiça separada"}]}, "club": "Clube 1000 Carnes", "startPoints": 220, "rewards": [{"e": "🧄", "name": "Pão de alho", "short": "um pão de alho", "cost": 150}, {"e": "⚫", "name": "Saco de carvão", "short": "um carvão", "cost": 250}, {"e": "🌭", "name": "1 kg de linguiça", "short": "1 kg de linguiça", "cost": 350}, {"e": "🔥", "name": "R$ 40 off no kit churrasco", "short": "R$ 40 off", "cost": 600}]};
+const C = {"title": "1000 Carnes", "subtitle": "Atacadão de carnes · Barros Reis", "stores": ["Largo do Retiro"], "hero": {"pill": "Cortes frescos todo dia", "title": "Kit churrasco<br>pronto pro sábado", "text": "Peça, pague no Pix e retire já embalado.", "emoji": "🔥"}, "quick": [["🛍️", "Pedir cortes"], ["🔥", "Kit churrasco"]], "tabs": [["🥩", "Cortes"], ["🔥", "Kits"]], "menuTitle": "Cortes", "popTitle": "Mais pedidos da semana", "categories": ["Bovinos", "Suínos", "Aves", "Acompanhamentos"], "products": [{"id": 1, "cat": "Bovinos", "name": "Picanha", "desc": "1 kg · peça ou fatiada", "price": 79.9, "e": "🥩", "pop": true}, {"id": 2, "cat": "Bovinos", "name": "Fraldinha", "desc": "1 kg", "price": 54.9, "e": "🥩"}, {"id": 3, "cat": "Bovinos", "name": "Alcatra", "desc": "1 kg · bife ou peça", "price": 49.9, "e": "🥩"}, {"id": 4, "cat": "Bovinos", "name": "Carne do sol", "desc": "1 kg", "price": 46.9, "e": "🥩", "pop": true}, {"id": 5, "cat": "Suínos", "name": "Linguiça toscana", "desc": "1 kg", "price": 27.9, "e": "🌭", "pop": true}, {"id": 6, "cat": "Suínos", "name": "Costelinha suína", "desc": "1 kg", "price": 32.9, "e": "🍖"}, {"id": 7, "cat": "Aves", "name": "Coxa e sobrecoxa", "desc": "1 kg", "price": 17.9, "e": "🍗"}, {"id": 8, "cat": "Aves", "name": "Asa de frango", "desc": "1 kg", "price": 22.9, "e": "🍗"}, {"id": 9, "cat": "Acompanhamentos", "name": "Carvão", "desc": "Saco de 5 kg", "price": 27.9, "e": "⚫"}, {"id": 10, "cat": "Acompanhamentos", "name": "Pão de alho", "desc": "Pacote com 5", "price": 13.9, "e": "🧄"}], "delivery": ["Retirar no açougue", "Entrega"], "times": ["Assim que ficar pronto (~20 min)", "Sábado 08:00", "Sábado 10:00", "Domingo 08:00"], "trackStep": "Cortando e embalando", "book": {"mode": "encomenda", "title": "Kits churrasco", "text": "Monte o churrasco com antecedência e retire tudo pronto.", "cta": "Confirmar e pagar o sinal", "done": "Simulação: kit encomendado ✓", "fields": [{"type": "select", "label": "Escolha o kit", "options": [["Kit 5 pessoas — 2,5 kg (R$ 179)", 179], ["Kit 10 pessoas — 5 kg (R$ 339)", 339], ["Kit premium com picanha — 3 kg (R$ 289)", 289]]}, {"type": "number", "label": "Quantidade", "value": 1}, {"type": "date", "label": "Data da retirada"}, {"type": "textarea", "label": "Como quer os cortes? (opcional)", "placeholder": "Ex.: picanha em bifes de 2 dedos, linguiça separada"}]}, "club": "Clube 1000 Carnes", "startPoints": 220, "rewards": [{"e": "🧄", "name": "Pão de alho", "short": "um pão de alho", "cost": 150}, {"e": "⚫", "name": "Saco de carvão", "short": "um carvão", "cost": 250}, {"e": "🌭", "name": "1 kg de linguiça", "short": "1 kg de linguiça", "cost": 350}, {"e": "🔥", "name": "R$ 40 off no kit churrasco", "short": "R$ 40 off", "cost": 600}]};
 let storeIdx = 0, cat = C.categories[0], cart = {}, points = C.startPoints;
 const $ = id => document.getElementById(id);
 const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
